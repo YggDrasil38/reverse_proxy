@@ -1,0 +1,12 @@
+tls:
+  # Déclaration explicite des certificats utilisés par Traefik.
+  # En production, privilégier ACME/Let's Encrypt ou un certificat wildcard managé.
+  certificates:
+    - certFile: /certs/192.168.1.184+3.pem   # chemin monté via volume docker-compose
+      keyFile: /certs/192.168.1.184+3-key.pem
+
+  # Options TLS par défaut appliquées aux routers qui n'en définissent pas.
+  options:
+    default:
+      # Version minimale recommandée pour éviter TLS < 1.2
+      minVersion: VersionTLS12

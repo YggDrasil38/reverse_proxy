@@ -1,0 +1,24 @@
+http:
+  # Middleware CORS pour autoriser un front spécifique à appeler vos APIs.
+  # ATTENTION: ne pas utiliser "*" quand accessControlAllowCredentials=true (non conforme au standard).
+  middlewares:
+    cors:
+      headers:
+        # Origine autorisée (adapter avec votre domaine front réel).
+        accessControlAllowOrigin: "https://app.localhost"
+        # Méthodes HTTP permises.
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        # En-têtes que le client est autorisé à envoyer.
+        accessControlAllowHeaders:
+          - Content-Type
+          - Authorization
+        # Autorise l'envoi de cookies/Authorization (avec une origine explicite, pas "*").
+        accessControlAllowCredentials: true
+        # Temps de cache (en secondes) de la réponse préflight côté navigateur.
+        accessControlMaxAge: 600

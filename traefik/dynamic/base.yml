@@ -1,0 +1,45 @@
+http:
+  # Déclaration de middlewares génériques applicables à plusieurs services.
+  # Ces middlewares ne créent pas de routes ; ils s'attachent à des routers via labels ou fichiers dynamiques.
+  middlewares:
+    # Compression gzip/br (selon support client). Réduit la taille des réponses.
+    compress:
+      compress: {}
+
+    # Limitation de débit (rate limiting) pour protéger contre l'abus/pic.
+    ratelimit:
+      rateLimit:
+        # Nombre moyen de requêtes/s autorisées par client (IP) avant throttling.
+        average: 100
+        # Tolérance de pics court terme.
+        burst: 50
+
+    # En-têtes de sécurité HTTP standards.
+    sec-headers:
+      headers:
+        # Empêche l'inclusion dans des iframes (clickjacking).
+        frameDeny: true
+        # Interdit l'interprétation MIME hasardeuse.
+        contentTypeNosniff: true
+        # Politique du referer raisonnable par défaut.
+        referrerPolicy: no-referrer-when-downgrade
+        # Active la protection XSS de navigateurs hérités.
+        browserXssFilter: true
+        # HSTS: force HTTPS pendant 1 an (en secondes).
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+
+        # Nettoyage d'en-têtes d'identité serveur côté réponse.
+        customResponseHeaders:
+          Server: ""
+          X-Powered-By: ""
+          X-AspNet-Version: ""
+          X-Runtime: ""
+
+        # Force l'entête côté requête quand l'appli en amont en dépend.
+        # À n'utiliser que si nécessaire (souvent ajouté automatiquement par Traefik).
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+
+

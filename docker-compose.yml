@@ -1,0 +1,31 @@
+services:
+  traefik:
+    image: traefik:v3.5
+    profiles: ["dev"] 
+    container_name: gateway
+    command:
+     # Active l’endpoint interne de "ping" (http://127.0.0.1:8080/ping)
+      - --ping=true
+
+    # Expose les ports 80 et 443
+    ports:
+      - "80:80"
+      - "443:443"
+      #- "443:443/udp"        # HTTP/3
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+        - ./traefik/dynamic:/etc/traefik/dynamic:ro
+        - ./certs:/certs:ro
+    healthcheck:
+        test: ["CMD", "traefik", "healthcheck", "--ping"]
+        interval: 30s
+        timeout: 5s
+        retries: 3
+        start_period: 10s
+    networks: [public]
+
+networks:
+  public:
+    external: true
+    name: public

@@ -1,0 +1,12 @@
+# Editor/OS
+.DS_Store
+
+# Traefik ACME store (secrets)
+traefik/letsencrypt/acme.json
+
+# Local certs
+certs/*
+!certs/.gitkeep
+
+# Logs
+logs/

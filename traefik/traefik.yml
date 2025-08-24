@@ -1,0 +1,31 @@
+log:
+  level: DEBUG
+
+accessLog:
+  format: json
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    #rien n’est exposé par défaut. mettre traefik.enable=true sur chaque service que tu veux publier.
+    exposedByDefault: false
+    endpoint: "unix:///var/run/docker.sock"
+    network: public
+
+  file:
+    directory: "/etc/traefik/dynamic"  # fichiers dynamiques (certs, middlewares, routes)
+    watch: true
+
+api:
+  insecure: true
+  dashboard: true
