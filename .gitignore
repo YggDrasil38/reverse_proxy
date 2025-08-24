@@ -10,3 +10,7 @@ certs/*
 
 # Logs
 logs/
+
+.env
+
+letsencrypt
