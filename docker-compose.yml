@@ -12,15 +12,22 @@ services:
 
     # Expose les ports 80 et 443
     ports:
-      - "80:80"
-      - "8080:8080"
-      - "443:443"
+      - "192.168.1.184:80:80"
+      - "192.168.1.184:443:443"
       #- "443:443/udp"        # HTTP/3
     volumes:
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-        - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-        - ./traefik/dynamic:/etc/traefik/dynamic:ro
-        - ./certs:/certs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic:/etc/traefik/dynamic:ro
+      - ./certs:/certs:ro
+      - ./logs:/var/log/traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`traefik.dev.preuvr.lan`)
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.middlewares=auth@file
     healthcheck:
         test: ["CMD", "traefik", "healthcheck", "--ping"]
         interval: 30s

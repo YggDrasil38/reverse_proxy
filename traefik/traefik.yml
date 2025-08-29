@@ -2,7 +2,9 @@ log:
   level: DEBUG
 
 accessLog:
+  filePath: "/var/log/traefik/access.log"
   format: json
+  bufferingSize: 100
 
 entryPoints:
   web:
@@ -14,6 +16,9 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
+
+  traefik:
+    address: ":8080"
 
 providers:
   docker:
@@ -27,5 +32,13 @@ providers:
     watch: true
 
 api:
-  insecure: true
+  insecure: false 
   dashboard: true
+
+ping:
+  entryPoint: traefik
+
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addServicesLabels: true

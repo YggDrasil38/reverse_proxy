@@ -1,0 +1,10 @@
+http:
+  middlewares:
+    auth:
+      basicAuth:
+        users:
+          - "admin$apr1$Sj9x95NJ$fo2eJ98BzoAqCq4jOyb1h0"
+    lan-only:
+      ipWhiteList:
+        sourceRange:
+          - "192.168.1.0/24"
